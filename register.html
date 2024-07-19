@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+      .divider:after,
+      .divider:before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #eee;
+      }
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+  </head>
+  <body>
+    <section class="vh-100">
+      <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+          <div class="col-md-8 col-lg-7 col-xl-6">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+              class="img-fluid"
+              alt="Phone image"
+            />
+          </div>
+          <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+            <form id="registerForm">
+              <!-- Name input -->
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control form-control-lg"
+                />
+                <label class="form-label" for="name">Name</label>
+              </div>
+
+              <!-- Email input -->
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control form-control-lg"
+                />
+                <label class="form-label" for="email">Email address</label>
+              </div>
+
+              <!-- Password input -->
+              <div data-mdb-input-init class="form-outline mb-4">
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control form-control-lg"
+                />
+                <label class="form-label" for="password">Password</label>
+              </div>
+
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-lg btn-block">
+                Sign up
+              </button>
+
+              <!-- Response Message -->
+              <div id="responseMessage" class="mt-3"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#registerForm").on("submit", function (event) {
+          event.preventDefault();
+
+          var name = $("#name").val();
+          var email = $("#email").val();
+          var password = $("#password").val();
+
+          $.ajax({
+            url: "https://api-komentar-pengunjung.desafintech.com/api/users/signup",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+              name: name,
+              email: email,
+              password: password,
+            }),
+            success: function (response) {
+              $("#responseMessage").html(
+                '<div class="alert alert-success">Registrasi berhasil! Akan dialihkan ke halaman login...</div>'
+              );
+              alert("Registrasi berhasil!");
+              setTimeout(function () {
+                window.location.href = "login.html";
+              }, 2000); // Redirect setelah 2 detik
+            },
+            error: function (xhr, status, error) {
+              var errorMessage = xhr.status + ": " + xhr.statusText;
+              $("#responseMessage").html(
+                '<div class="alert alert-danger">Registrasi gagal. Silakan coba lagi nanti.</div>'
+              );
+              console.error("Error - " + errorMessage);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
